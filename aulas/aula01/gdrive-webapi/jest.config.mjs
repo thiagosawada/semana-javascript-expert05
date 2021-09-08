@@ -1,11 +1,7 @@
-/*
- * For a detailed explanation regarding each configuration property, visit:
- */
-
 export default {
   clearMocks: true,
   restoreMocks: true,
-  // collectCoverage: true,
+  collectCoverage: true,
   coverageDirectory: "coverage",
   coverageProvider: "v8",
   coverageReporters: [
@@ -21,11 +17,10 @@ export default {
       statements: 100
     }
   },
-  watchPathIgnorePatterns: [
-    "node_modules"
-  ],
+  watchPathIgnorePatterns: ["node_modules"],
   transformIgnorePatterns: ["node_modules"],
   collectCoverageFrom: [
+    // ignorar o index.js porque é a camada que expõe o código e não traz regras de negócio.
     "src/**/*.js", "!src/**/index.js"
   ]
 };
