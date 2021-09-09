@@ -1,7 +1,6 @@
 export default {
   clearMocks: true,
   restoreMocks: true,
-  collectCoverage: true,
   coverageDirectory: "coverage",
   coverageProvider: "v8",
   coverageReporters: [
