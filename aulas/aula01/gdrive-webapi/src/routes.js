@@ -17,7 +17,7 @@ export default class Routes {
   // Enviado pelo navegador pra saber se a api está de pé
   async options(request, response) {
     response.writeHead(204);
-    response.end("Hello World");
+    response.end();
   }
 
   async post(request, response) {
@@ -30,7 +30,7 @@ export default class Routes {
     response.end();
   }
 
-  handler(request, response) {
+  async handler(request, response) {
     // Liberar o cors
     response.setHeader("Access-Control-Allow-Origin", "*");
 
