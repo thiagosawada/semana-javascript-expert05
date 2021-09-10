@@ -1,9 +1,16 @@
+import FileHelper from "./FileHelper.js";
 import { logger } from "./logger.js";
+import { dirname, resolve } from "path";
+import { fileURLToPath } from "url";
+
+// Pegar o nome da pasta deste arquivo
+const __dirname = dirname(fileURLToPath(import.meta.url));
+const defaultDownloadsFolder = resolve(__dirname, "../", "downloads");
 
 export default class Routes {
   io;
-  constructor() {
-
+  constructor(downloadsFolder = defaultDownloadsFolder) {
+    this.downloadsFolder = downloadsFolder;
   }
 
   setSocketInstance(io) {
@@ -26,7 +33,7 @@ export default class Routes {
   }
 
   async get(request, response) {
-    logger.info("get");
+    const result = await FileHelper.getFilesStatus(this.downloadsFolder)
     response.end();
   }
 
