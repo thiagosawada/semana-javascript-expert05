@@ -8,6 +8,22 @@ import {
 import Routes from "./../../src/routes.js";
 
 describe("#Routes test suite", () => {
+  const defaultParams = {
+    request: {
+      headers: {
+        "Content-Type": "multipart/form-data" // Para arquivos
+      },
+      method: "", // Recebe a rota
+      body: {},
+    },
+    response: {
+      setHeader: jest.fn(),
+      writeHead: jest.fn(),
+      end: jest.fn(),
+    },
+    values: () => Object.values(defaultParams),
+  }
+
   describe("#setSocketInstance", () => {
     test("setSocket should store io instance", () => {
       const routes = new Routes();
@@ -22,22 +38,6 @@ describe("#Routes test suite", () => {
   });
 
   describe("handler", () => {
-    const defaultParams = {
-      request: {
-        headers: {
-          "Content-Type": "multipart/form-data" // Para arquivos
-        },
-        method: "", // Recebe a rota
-        body: {},
-      },
-      response: {
-        setHeader: jest.fn(),
-        writeHead: jest.fn(),
-        end: jest.fn(),
-      },
-      values: () => Object.values(defaultParams),
-    }
-
     test("given an inexistent route it should choose default route", async () => {
       const routes = new Routes();
       const params = { ...defaultParams };
@@ -91,14 +91,27 @@ describe("#Routes test suite", () => {
 
   describe("#get", () => {
     test("given method GET it should list all downloaded files", async () => {
+      const routes = new Routes();
+      const params = { ...defaultParams };
+
       const filesStatusesMock = [
         {
-          size: 327458,
-          birthtime: "2021-09-09T22:56:25.469Z",
+          size: "327 kB",
+          lastModified: "2021-09-09T22:56:25.469Z",
           owner: "user",
           file: "file.png",
         }
-      ]
+      ];
+
+      jest.spyOn(routes.fileHelper, routes.fileHelper.getFilesStatus.name)
+        .mockResolvedValue(filesStatusesMock);
+
+      params.request.method = "GET";
+
+      await routes.handler(...params.values());
+
+      expect(params.response.writeHead).toHaveBeenCalledWith(200);
+      expect(params.response.end).toHaveBeenCalledWith(JSON.stringify(filesStatusesMock));
     });
   });
 });

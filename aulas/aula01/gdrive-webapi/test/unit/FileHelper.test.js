@@ -8,8 +8,6 @@ import {
 import fs from "fs";
 import FileHelper from "../../src/FileHelper.js";
 
-import Routes from "./../../src/routes.js";
-
 describe("#FileHelper", () => {
   describe("#getFilesStatus", () => {
     test("it should return files statuses in correct format", async () => {

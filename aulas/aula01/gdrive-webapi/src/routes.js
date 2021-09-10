@@ -11,6 +11,7 @@ export default class Routes {
   io;
   constructor(downloadsFolder = defaultDownloadsFolder) {
     this.downloadsFolder = downloadsFolder;
+    this.fileHelper = FileHelper;
   }
 
   setSocketInstance(io) {
@@ -33,8 +34,9 @@ export default class Routes {
   }
 
   async get(request, response) {
-    const result = await FileHelper.getFilesStatus(this.downloadsFolder)
-    response.end();
+    const files = await this.fileHelper.getFilesStatus(this.downloadsFolder)
+    response.writeHead(200);
+    response.end(JSON.stringify(files));
   }
 
   async handler(request, response) {
